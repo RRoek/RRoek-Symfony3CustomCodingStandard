@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<ruleset name="Symfony3RRoek">
+    <description>The Symfony3RRoek coding standard.</description>
+
+    <!-- There should not be any code in the bundle Resources directory. -->
+    <exclude-pattern>*/Resources/*</exclude-pattern>
+
+    <!-- Symfony follows the standards defined in the PSR-0, PSR-1 and PSR-2 documents. -->
+
+    <!-- Include the whole PSR-1 standard -->
+    <rule ref="PSR1"/>
+    <rule ref="PSR1">
+        <exclude name="PSR1.Classes.ClassDeclaration"/>
+    </rule>
+
+    <!-- Include the whole PSR-2 standard -->
+    <rule ref="PSR2">
+        <!-- Excludes the '_' sign before private & protected methods/properties -->
+        <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
+        <exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
+    </rule>
+    <!-- Les normes de codage Symfony intègrent déjà les normes PSR-0-1-2-3-4.
+        Il est possible de s'y référer à l'addresse suivante :
+        http://symfony.com/doc/current/contributing/code/standards.html. -->
+    <!-- Include the whole PSR-3 standard -->
+    <!--rule ref="PSR3" /-->
+    <!-- Include the whole PSR-4 standard -->
+    <!--rule ref="PSR4" /-->
+    <!--
+
+    See the [documented coding standard](http://symfony.com/doc/current/contributing/code/standards.html)
+
+    This CodeSniffer standard does not yet enforce the following:
+
+    # Structure
+
+    * The @package and @subpackage annotations are not used.
+    * Use uppercase strings for constants with words separated with underscores
+    * Exception message strings should be concatenated using sprintf
+
+    # Naming Conventions
+
+    * Use underscores for option, argument, parameter names;
+
+    -->
+
+    <!-- GENERIC -->
+
+    <rule ref="Generic.ControlStructures.InlineControlStructure"/>
+    <rule ref="Generic.Formatting.SpaceAfterCast"/>
+    <rule ref="Generic.Functions.CallTimePassByReference"/>
+    <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+    <rule ref="Generic.PHP.LowerCaseConstant"/>
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+        </properties>
+        <severity>0</severity>
+    </rule>
+
+    <!-- SQUIZ -->
+
+    <rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
+    <rule ref="Squiz.ControlStructures.ControlSignature"/>
+    <rule ref="Squiz.ControlStructures.ForEachLoopDeclaration"/>
+    <rule ref="Squiz.ControlStructures.ForLoopDeclaration"/>
+    <rule ref="Squiz.ControlStructures.LowercaseDeclaration"/>
+    <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
+    <rule ref="Squiz.Scope.MemberVarScope"/>
+    <rule ref="Squiz.Strings.ConcatenationSpacing">
+        <properties>
+            <property name="spacing" value="1"/>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+        <properties>
+            <property name="ignoreBlankLines" value="false"/>
+        </properties>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines">
+        <severity>5</severity>
+    </rule>
+
+    <!-- PEAR -->
+
+    <!-- We provide our own subclass of PEAR's ClassComment and FunctionComment sniff, but these will do: -->
+    <rule ref="PEAR.Commenting.InlineComment"/>
+
+    <!-- In practice, Symfony3RRoek spaces multiline function calls differently than Zend -->
+    <rule ref="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket">
+        <severity>0</severity>
+    </rule>
+    <rule ref="PEAR.Functions.FunctionCallSignature.SpaceAfterCloseBracket">
+        <severity>0</severity>
+    </rule>
+    <rule ref="PEAR.Functions.FunctionCallSignature.CloseBracketLine">
+        <severity>0</severity>
+    </rule>
+
+    <!-- ZEND -->
+
+    <!-- Import Zend coding standard (which in turn imports PEAR) -->
+    <rule ref="Zend">
+        <!-- but exclude their code analyzer -->
+        <exclude name="Zend.Debug.CodeAnalyzer"/>
+
+        <!-- covered by Squiz ControlSignature, which enforces try/catch as well -->
+        <exclude name="PEAR.ControlStructures.ControlSignature"/>
+
+        <exclude name="PEAR.Commenting.FunctionComment.SpacingBeforeTags"/>
+
+        <!-- covered by Squiz FunctionDeclarationSniff -->
+        <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman.BraceOnSameLine"/>
+    </rule>
+
+    <!-- Don't enforce Zend's private member underscores
+    We also drop the severity of this message from the
+    default value (5) so that it is hidden by default. It can be
+    displayed by setting the minimum severity on the PHP_CodeSniffer
+    command line. This is great if you want to use some messages
+    only in code reviews and not have them block code commits.
+    -->
+    <rule ref="Zend.NamingConventions.ValidVariableName.PrivateNoUnderscore">
+        <severity>3</severity>
+        <exclude-pattern>*/Entity/*</exclude-pattern>
+    </rule>
+
+    <!-- Ignore variables that contains numbers -->
+    <rule ref="Zend.NamingConventions.ValidVariableName.ContainsNumbers">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Ignore variables that contains numbers -->
+    <rule ref="Zend.NamingConventions.ValidVariableName.NotCamelCaps">
+        <severity>0</severity>
+    </rule>
+
+    <!-- ============================= -->
+    <!-- RRoek customizing -->
+    <!-- ============================= -->
+
+    <rule ref="Symfony3RRoek.Commenting.FunctionComment.MissingParamComment">
+        <severity>0</severity>
+    </rule>
+
+    <rule ref="Symfony3RRoek.Commenting.FunctionComment.SpacingBeforeTags">
+        <severity>0</severity>
+    </rule>
+
+    <rule ref="Symfony3RRoek.Commenting">
+        <exclude name="Symfony3RRoek.Commenting.ClassComment"/>
+    </rule>
+
+    <rule ref="Symfony3RRoek.Objects.ObjectInstantiation">
+        <exclude name="Symfony3RRoek.Objects.ObjectInstantiation.Invalid"/>
+    </rule>
+
+    <rule ref="Symfony3RRoek.Functions.ScopeOrder">
+        <exclude name="Symfony3RRoek.Functions.ScopeOrder.Invalid"/>
+    </rule>
+</ruleset>
